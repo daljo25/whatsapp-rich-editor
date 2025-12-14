@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace Daljo25\WhatsappRichEditor;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
@@ -13,14 +13,14 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
-use VendorName\Skeleton\Testing\TestsSkeleton;
+use Daljo25\WhatsappRichEditor\Commands\WhatsappRichEditorCommand;
+use Daljo25\WhatsappRichEditor\Testing\TestsWhatsappRichEditor;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class WhatsappRichEditorServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'skeleton';
+    public static string $name = 'whatsapp-rich-editor';
 
-    public static string $viewNamespace = 'skeleton';
+    public static string $viewNamespace = 'whatsapp-rich-editor';
 
     public function configurePackage(Package $package): void
     {
@@ -36,7 +36,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub(':vendor_slug/:package_slug');
+                    ->askToStarRepoOnGitHub('daljo25/whatsapp-rich-editor');
             });
 
         $configFileName = $package->shortName();
@@ -80,18 +80,18 @@ class SkeletonServiceProvider extends PackageServiceProvider
         if (app()->runningInConsole()) {
             foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
-                    $file->getRealPath() => base_path("stubs/skeleton/{$file->getFilename()}"),
-                ], 'skeleton-stubs');
+                    $file->getRealPath() => base_path("stubs/whatsapp-rich-editor/{$file->getFilename()}"),
+                ], 'whatsapp-rich-editor-stubs');
             }
         }
 
         // Testing
-        Testable::mixin(new TestsSkeleton);
+        Testable::mixin(new TestsWhatsappRichEditor);
     }
 
     protected function getAssetPackageName(): ?string
     {
-        return ':vendor_slug/:package_slug';
+        return 'daljo25/whatsapp-rich-editor';
     }
 
     /**
@@ -100,9 +100,9 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            // AlpineComponent::make('skeleton', __DIR__ . '/../resources/dist/components/skeleton.js'),
-            Css::make('skeleton-styles', __DIR__ . '/../resources/dist/skeleton.css'),
-            Js::make('skeleton-scripts', __DIR__ . '/../resources/dist/skeleton.js'),
+            // AlpineComponent::make('whatsapp-rich-editor', __DIR__ . '/../resources/dist/components/whatsapp-rich-editor.js'),
+            Css::make('whatsapp-rich-editor-styles', __DIR__ . '/../resources/dist/whatsapp-rich-editor.css'),
+            Js::make('whatsapp-rich-editor-scripts', __DIR__ . '/../resources/dist/whatsapp-rich-editor.js'),
         ];
     }
 
@@ -112,7 +112,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            SkeletonCommand::class,
+            WhatsappRichEditorCommand::class,
         ];
     }
 
@@ -146,7 +146,13 @@ class SkeletonServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_skeleton_table',
+            'create_whatsapp-rich-editor_table',
         ];
+    }
+
+    public function boot(): void
+    {
+        // Cargar las vistas del plugin
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'whatsapp-rich-editor');
     }
 }
